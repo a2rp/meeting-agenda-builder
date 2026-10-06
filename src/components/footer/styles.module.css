@@ -1,0 +1,112 @@
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  width: min(calc(100% - 48px), 1160px);
+  margin: 16px auto 0;
+  padding: 18px 0 24px;
+  border-top: 1px solid var(--color-line);
+
+  .footer-left {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: center;
+    gap: 10px;
+    min-width: 245px;
+
+    > p {
+      color: var(--color-muted);
+      font-size: 10px;
+      line-height: 1.5;
+    }
+
+    > p a {
+      color: var(--color-ink);
+      border-bottom: 1px solid transparent;
+      transition: border-color 160ms ease, box-shadow 160ms ease;
+
+      &:hover,
+      &:focus-visible {
+        border-color: var(--color-rust);
+        outline: none;
+        box-shadow: 0 2px 0 rgb(168 73 50 / 12%);
+      }
+    }
+  }
+
+  .footer-logo {
+    display: grid;
+    width: 39px;
+    height: 39px;
+    place-items: center;
+    background: var(--color-surface);
+    border: 1px solid var(--color-line);
+    border-radius: 9px;
+    transition: border-color 160ms ease, box-shadow 160ms ease;
+
+    img {
+      width: 27px;
+      height: 27px;
+      object-fit: contain;
+    }
+
+    &:hover,
+    &:focus-visible {
+      border-color: var(--color-rust);
+      outline: none;
+      box-shadow: 0 3px 10px rgb(48 37 28 / 8%);
+    }
+  }
+
+  .footer-links {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: end;
+    gap: 5px 10px;
+
+    a {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 4px 5px;
+      color: var(--color-muted);
+      border: 1px solid transparent;
+      border-radius: 6px;
+      font-size: 9px;
+      transition: border-color 160ms ease, box-shadow 160ms ease;
+
+      svg {
+        width: 12px;
+        height: 12px;
+      }
+
+      &:hover,
+      &:focus-visible {
+        color: var(--color-ink);
+        border-color: var(--color-line);
+        outline: none;
+        box-shadow: 0 2px 7px rgb(48 37 28 / 7%);
+      }
+    }
+  }
+
+  @media (max-width: 840px) {
+    align-items: start;
+    flex-direction: column;
+    gap: 14px;
+
+    .footer-links {
+      justify-content: start;
+    }
+  }
+
+  @media (max-width: 600px) {
+    width: calc(100% - 32px);
+    padding-bottom: 18px;
+
+    .footer-left {
+      min-width: 0;
+    }
+  }
+}
