@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import styles from './App.module.css'
+import AgendaEditor from './components/agendaEditor/index.jsx'
 import Header from './components/header/index.jsx'
 import MeetingList from './components/meetingList/index.jsx'
 import { makeInitialMeetings } from './data/meetings.js'
@@ -24,11 +25,18 @@ const loadSelectedMeetingId = () => {
 }
 
 const App = () => {
-  const [meetings] = useState(loadMeetings)
+  const [meetings, setMeetings] = useState(loadMeetings)
   const [selectedMeetingId, setSelectedMeetingId] = useState(loadSelectedMeetingId)
   const visibleMeetingId = meetings.some((meeting) => meeting.id === selectedMeetingId)
     ? selectedMeetingId
     : meetings[0]?.id
+  const selectedMeeting = meetings.find((meeting) => meeting.id === visibleMeetingId)
+
+  const updateAgenda = (meetingId, agenda) => {
+    setMeetings((currentMeetings) => currentMeetings.map((meeting) =>
+      meeting.id === meetingId ? { ...meeting, agenda } : meeting,
+    ))
+  }
 
   useEffect(() => {
     try {
@@ -64,11 +72,7 @@ const App = () => {
             selectedMeetingId={visibleMeetingId}
             onSelectMeeting={setSelectedMeetingId}
           />
-          <section className={`${styles.placeholder} ${styles['planning-agenda']}`} id="agenda" aria-labelledby="agenda-title">
-            <p className={styles.sectionLabel}>THE RUN OF SHOW / 02</p>
-            <h2 id="agenda-title">A little structure goes a long way.</h2>
-            <p>Each topic will have an owner, a timebox, and a clear next step.</p>
-          </section>
+          <AgendaEditor meeting={selectedMeeting} onUpdateAgenda={updateAgenda} />
           <section className={`${styles.placeholder} ${styles['planning-note']}`} id="notes" aria-labelledby="notes-title">
             <p className={styles.sectionLabel}>AFTER THE MEETING / 03</p>
             <h2 id="notes-title">Close with what comes next.</h2>
