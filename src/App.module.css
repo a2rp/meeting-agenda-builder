@@ -11,7 +11,7 @@
   .workspace {
     width: min(calc(100% - 48px), 1160px);
     margin-inline: auto;
-    padding: 72px 0;
+    padding: 112px 0 72px;
   }
 
   .kicker,
@@ -42,31 +42,36 @@
     font-size: 17px;
   }
 
-  .setupNote {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    max-width: 480px;
-    margin-top: 64px;
-    padding-top: 18px;
+  .placeholder {
+    max-width: 800px;
+    margin-top: 56px;
+    padding-top: 20px;
     border-top: 1px solid var(--color-line);
 
-    p {
+    h2 {
+      margin-top: 8px;
+      font-family: var(--font-display);
+      font-size: 30px;
+    }
+
+    > p:last-child {
+      margin-top: 5px;
       color: var(--color-muted);
       font-size: 14px;
     }
   }
 
-  .noteNumber {
+  .sectionLabel {
     color: var(--color-rust);
-    font-family: var(--font-display);
-    font-size: 24px;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 1px;
   }
 
   @media (max-width: 600px) {
     .workspace {
       width: calc(100% - 32px);
-      padding: 34px 0 48px;
+      padding: 94px 0 48px;
     }
 
     .opening {
@@ -82,8 +87,12 @@
       font-size: 15px;
     }
 
-    .setupNote {
-      margin-top: 40px;
+    .placeholder {
+      margin-top: 42px;
+
+      h2 {
+        font-size: 25px;
+      }
     }
   }
 }
