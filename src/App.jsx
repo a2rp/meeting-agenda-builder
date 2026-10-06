@@ -1,35 +1,83 @@
+import { useEffect, useState } from 'react'
 import styles from './App.module.css'
 import Header from './components/header/index.jsx'
+import MeetingList from './components/meetingList/index.jsx'
+import { makeInitialMeetings } from './data/meetings.js'
 
-const App = () => (
-  <div className={styles.app} id="top">
-    <Header />
-    <main className={styles.workspace}>
-      <p className={styles.kicker}>ROOMNOTE / MEETING PLANNER</p>
-      <section className={styles.opening} id="overview" aria-labelledby="page-title">
-        <p className={styles.eyebrow}>GOOD MEETINGS START BEFORE THE ROOM FILLS</p>
-        <h1 id="page-title">Make the hour count.</h1>
-        <p className={styles.introCopy}>
-          Shape a clear agenda, give every topic its time, and leave with decisions everyone can act on.
-        </p>
-      </section>
-      <section className={styles.placeholder} id="meetings" aria-labelledby="meetings-title">
-        <p className={styles.sectionLabel}>YOUR WEEK / 01</p>
-        <h2 id="meetings-title">Meetings, in good order.</h2>
-        <p>Your upcoming sessions will appear here.</p>
-      </section>
-      <section className={styles.placeholder} id="agenda" aria-labelledby="agenda-title">
-        <p className={styles.sectionLabel}>THE RUN OF SHOW / 02</p>
-        <h2 id="agenda-title">A little structure goes a long way.</h2>
-        <p>Each topic will have an owner, a timebox, and a clear next step.</p>
-      </section>
-      <section className={styles.placeholder} id="notes" aria-labelledby="notes-title">
-        <p className={styles.sectionLabel}>AFTER THE MEETING / 03</p>
-        <h2 id="notes-title">Close with what comes next.</h2>
-        <p>Decisions and follow-ups will stay with the meeting they came from.</p>
-      </section>
-    </main>
-  </div>
-)
+const loadMeetings = () => {
+  try {
+    const savedMeetings = localStorage.getItem('roomnote-meetings-v1')
+    if (savedMeetings) return JSON.parse(savedMeetings)
+  } catch {
+    return makeInitialMeetings()
+  }
+
+  return makeInitialMeetings()
+}
+
+const loadSelectedMeetingId = () => {
+  try {
+    return localStorage.getItem('roomnote-selected-meeting-v1') || 'meeting-product-review'
+  } catch {
+    return 'meeting-product-review'
+  }
+}
+
+const App = () => {
+  const [meetings] = useState(loadMeetings)
+  const [selectedMeetingId, setSelectedMeetingId] = useState(loadSelectedMeetingId)
+  const visibleMeetingId = meetings.some((meeting) => meeting.id === selectedMeetingId)
+    ? selectedMeetingId
+    : meetings[0]?.id
+
+  useEffect(() => {
+    try {
+      localStorage.setItem('roomnote-meetings-v1', JSON.stringify(meetings))
+    } catch {
+      // The planner remains usable if browser storage is unavailable.
+    }
+  }, [meetings])
+
+  useEffect(() => {
+    try {
+      if (visibleMeetingId) localStorage.setItem('roomnote-selected-meeting-v1', visibleMeetingId)
+    } catch {
+      // The active meeting is still available until the page is refreshed.
+    }
+  }, [visibleMeetingId])
+
+  return (
+    <div className={styles.app} id="top">
+      <Header />
+      <main className={styles.workspace}>
+        <p className={styles.kicker}>ROOMNOTE / MEETING PLANNER</p>
+        <section className={styles.opening} id="overview" aria-labelledby="page-title">
+          <p className={styles.eyebrow}>GOOD MEETINGS START BEFORE THE ROOM FILLS</p>
+          <h1 id="page-title">Make the hour count.</h1>
+          <p className={styles.introCopy}>
+            Shape a clear agenda, give every topic its time, and leave with decisions everyone can act on.
+          </p>
+        </section>
+        <div className={styles['planning-layout']}>
+          <MeetingList
+            meetings={meetings}
+            selectedMeetingId={visibleMeetingId}
+            onSelectMeeting={setSelectedMeetingId}
+          />
+          <section className={`${styles.placeholder} ${styles['planning-agenda']}`} id="agenda" aria-labelledby="agenda-title">
+            <p className={styles.sectionLabel}>THE RUN OF SHOW / 02</p>
+            <h2 id="agenda-title">A little structure goes a long way.</h2>
+            <p>Each topic will have an owner, a timebox, and a clear next step.</p>
+          </section>
+          <section className={`${styles.placeholder} ${styles['planning-note']}`} id="notes" aria-labelledby="notes-title">
+            <p className={styles.sectionLabel}>AFTER THE MEETING / 03</p>
+            <h2 id="notes-title">Close with what comes next.</h2>
+            <p>Decisions and follow-ups will stay with the meeting they came from.</p>
+          </section>
+        </div>
+      </main>
+    </div>
+  )
+}
 
 export default App
