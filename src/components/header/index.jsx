@@ -48,6 +48,7 @@ const Header = () => {
       <a
         className={styles.repository}
         href="https://github.com/a2rp/meeting-agenda-builder"
+        aria-label="Open the public GitHub repository"
         target="_blank"
         rel="noreferrer"
       >
