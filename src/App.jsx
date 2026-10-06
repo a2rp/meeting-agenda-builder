@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import styles from './App.module.css'
 import AgendaEditor from './components/agendaEditor/index.jsx'
+import FacilitatorPanel from './components/facilitatorPanel/index.jsx'
 import Header from './components/header/index.jsx'
 import MeetingList from './components/meetingList/index.jsx'
 import { makeInitialMeetings } from './data/meetings.js'
@@ -35,6 +36,12 @@ const App = () => {
   const updateAgenda = (meetingId, agenda) => {
     setMeetings((currentMeetings) => currentMeetings.map((meeting) =>
       meeting.id === meetingId ? { ...meeting, agenda } : meeting,
+    ))
+  }
+
+  const updateMeetingNote = (meetingId, note) => {
+    setMeetings((currentMeetings) => currentMeetings.map((meeting) =>
+      meeting.id === meetingId ? { ...meeting, note } : meeting,
     ))
   }
 
@@ -73,11 +80,11 @@ const App = () => {
             onSelectMeeting={setSelectedMeetingId}
           />
           <AgendaEditor meeting={selectedMeeting} onUpdateAgenda={updateAgenda} />
-          <section className={`${styles.placeholder} ${styles['planning-note']}`} id="notes" aria-labelledby="notes-title">
-            <p className={styles.sectionLabel}>AFTER THE MEETING / 03</p>
-            <h2 id="notes-title">Close with what comes next.</h2>
-            <p>Decisions and follow-ups will stay with the meeting they came from.</p>
-          </section>
+          <FacilitatorPanel
+            key={visibleMeetingId || 'no-meeting'}
+            meeting={selectedMeeting}
+            onUpdateNote={updateMeetingNote}
+          />
         </div>
       </main>
     </div>

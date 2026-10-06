@@ -1,0 +1,250 @@
+.panel {
+  display: grid;
+  gap: 12px;
+
+  .timer-card,
+  .people-card,
+  .notes-card {
+    padding: 16px;
+    background: var(--color-surface);
+    border: 1px solid var(--color-line);
+    border-radius: 14px;
+  }
+
+  .timer-card {
+    display: grid;
+    justify-items: center;
+    text-align: center;
+
+    h2 {
+      margin-top: 3px;
+      font-family: var(--font-display);
+      font-size: 21px;
+    }
+  }
+
+  .eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    color: var(--color-rust);
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 0.8px;
+
+    svg {
+      width: 12px;
+      height: 12px;
+    }
+  }
+
+  .timer-dial {
+    display: grid;
+    width: 136px;
+    aspect-ratio: 1;
+    margin-top: 14px;
+    padding: 7px;
+    place-items: center;
+    background: conic-gradient(var(--color-rust) var(--timer-progress), #eee4d4 0);
+    border-radius: 50%;
+
+    > div {
+      display: grid;
+      width: 100%;
+      height: 100%;
+      align-content: center;
+      justify-items: center;
+      background: var(--color-surface);
+      border-radius: 50%;
+    }
+
+    strong {
+      color: var(--color-ink);
+      font-family: var(--font-mono);
+      font-size: 29px;
+      font-weight: 500;
+      letter-spacing: -1.5px;
+      line-height: 1.1;
+    }
+
+    span {
+      margin-top: 3px;
+      color: var(--color-muted);
+      font-size: 10px;
+    }
+  }
+
+  .timer-caption {
+    margin-top: 8px;
+    color: var(--color-muted);
+    font-size: 10px;
+  }
+
+  .timer-controls {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    margin-top: 12px;
+  }
+
+  .timer-start,
+  .timer-reset {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    min-height: 35px;
+    color: var(--color-ink);
+    background: #f8f1e5;
+    border: 1px solid #e4d7c3;
+    border-radius: 7px;
+    font-size: 10px;
+    font-weight: 750;
+    transition: border-color 160ms ease, box-shadow 160ms ease;
+
+    svg {
+      width: 14px;
+      height: 14px;
+    }
+
+    &:hover:not(:disabled),
+    &:focus-visible {
+      border-color: var(--color-rust);
+      outline: none;
+      box-shadow: 0 3px 9px rgb(48 37 28 / 8%);
+    }
+
+    &:disabled {
+      cursor: not-allowed;
+      opacity: 0.5;
+    }
+  }
+
+  .timer-start {
+    padding-inline: 11px;
+    color: #fffaf1;
+    background: var(--color-rust);
+    border-color: var(--color-rust);
+
+    &:hover:not(:disabled),
+    &:focus-visible {
+      border-color: var(--color-rust-dark);
+    }
+  }
+
+  .timer-reset {
+    width: 35px;
+  }
+
+  .people-card {
+    > header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      > span {
+        display: grid;
+        width: 24px;
+        height: 24px;
+        place-items: center;
+        color: var(--color-rust);
+        background: #f5e9d5;
+        border-radius: 50%;
+        font-size: 10px;
+        font-weight: 800;
+      }
+    }
+
+    h2 {
+      margin-top: 4px;
+      font-family: var(--font-display);
+      font-size: 20px;
+    }
+  }
+
+  .attendee-list {
+    display: grid;
+    gap: 8px;
+    margin-top: 12px;
+
+    li {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--color-ink);
+      font-size: 11px;
+      font-weight: 650;
+    }
+
+    li:nth-child(3n + 1) .avatar {
+      color: #8e482f;
+      background: #f1dfc7;
+    }
+
+    li:nth-child(3n + 2) .avatar {
+      color: #5f7256;
+      background: #e4ebdd;
+    }
+
+    li:nth-child(3n) .avatar {
+      color: #68506b;
+      background: #ede2ed;
+    }
+  }
+
+  .avatar {
+    display: grid;
+    width: 29px;
+    height: 29px;
+    flex: 0 0 auto;
+    place-items: center;
+    border-radius: 50%;
+    font-size: 9px;
+    font-weight: 800;
+  }
+
+  .empty-people {
+    margin-top: 10px;
+    color: var(--color-muted);
+    font-size: 11px;
+  }
+
+  .notes-card {
+    display: grid;
+    gap: 8px;
+
+    label {
+      display: grid;
+      gap: 3px;
+    }
+
+    label > strong {
+      color: var(--color-ink);
+      font-family: var(--font-display);
+      font-size: 20px;
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 88px;
+      padding: 9px;
+      color: var(--color-ink);
+      background: #fffcf6;
+      border: 1px solid #e2d8c9;
+      border-radius: 7px;
+      font-size: 11px;
+      line-height: 1.5;
+
+      &:focus {
+        border-color: var(--color-rust);
+        outline: none;
+        box-shadow: 0 0 0 3px rgb(168 73 50 / 10%);
+      }
+    }
+
+    > p {
+      color: var(--color-muted);
+      font-size: 9px;
+    }
+  }
+}
