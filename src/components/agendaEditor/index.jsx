@@ -25,7 +25,7 @@ const formatMeetingDate = (dateValue) => new Intl.DateTimeFormat('en-US', {
   day: 'numeric',
 }).format(new Date(`${dateValue}T12:00:00`))
 
-const AgendaEditor = ({ meeting, onUpdateAgenda }) => {
+const AgendaEditor = ({ meeting, onUpdateAgenda, onEditMeeting }) => {
   const [addOpen, setAddOpen] = useState(false)
   const [editingItemId, setEditingItemId] = useState(null)
   const [topicForm, setTopicForm] = useState(makeBlankTopic)
@@ -125,9 +125,14 @@ const AgendaEditor = ({ meeting, onUpdateAgenda }) => {
                 {formatMeetingDate(meeting.date)} <span aria-hidden="true">/</span> {meeting.location}
               </p>
             </div>
-            <button className={styles['add-topic-button']} type="button" onClick={openAddForm}>
-              <LuPlus aria-hidden="true" /> <span>Add a topic</span>
-            </button>
+            <div className={styles['heading-actions']}>
+              <button className={styles['edit-meeting-button']} type="button" onClick={() => onEditMeeting(meeting)}>
+                <LuPencil aria-hidden="true" /> <span>Edit meeting</span>
+              </button>
+              <button className={styles['add-topic-button']} type="button" onClick={openAddForm}>
+                <LuPlus aria-hidden="true" /> <span>Add a topic</span>
+              </button>
+            </div>
           </header>
 
           <div className={styles['agenda-overview']}>

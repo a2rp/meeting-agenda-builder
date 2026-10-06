@@ -36,7 +36,14 @@
     font-size: 11px;
   }
 
+  .heading-actions {
+    display: flex;
+    flex: 0 0 auto;
+    gap: 6px;
+  }
+
   .add-topic-button,
+  .edit-meeting-button,
   .save-button {
     display: inline-flex;
     align-items: center;
@@ -63,6 +70,19 @@
       border-color: var(--color-rust-dark);
       outline: none;
       box-shadow: 0 4px 12px rgb(128 55 35 / 18%);
+    }
+  }
+
+  .edit-meeting-button {
+    color: var(--color-muted);
+    background: var(--color-surface);
+    border-color: var(--color-line);
+
+    &:hover,
+    &:focus-visible {
+      color: var(--color-rust);
+      border-color: var(--color-rust);
+      box-shadow: 0 3px 9px rgb(48 37 28 / 8%);
     }
   }
 
@@ -392,6 +412,10 @@
 
     .add-topic-button {
       align-self: start;
+    }
+
+    .heading-actions {
+      flex-wrap: wrap;
     }
 
     .agenda-overview {

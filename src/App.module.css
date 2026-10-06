@@ -42,25 +42,6 @@
     font-size: 17px;
   }
 
-  .placeholder {
-    max-width: 800px;
-    margin-top: 56px;
-    padding-top: 20px;
-    border-top: 1px solid var(--color-line);
-
-    h2 {
-      margin-top: 8px;
-      font-family: var(--font-display);
-      font-size: 30px;
-    }
-
-    > p:last-child {
-      margin-top: 5px;
-      color: var(--color-muted);
-      font-size: 14px;
-    }
-  }
-
   .planning-layout {
     display: grid;
     grid-template-columns: minmax(225px, 0.78fr) minmax(0, 1.55fr) minmax(215px, 0.72fr);
@@ -72,22 +53,6 @@
       scroll-margin-top: 96px;
     }
 
-    .placeholder {
-      max-width: none;
-      min-height: 170px;
-      margin-top: 0;
-      padding: 20px;
-      background: var(--color-surface);
-      border-radius: 14px;
-    }
-
-  }
-
-  .sectionLabel {
-    color: var(--color-rust);
-    font-size: 10px;
-    font-weight: 800;
-    letter-spacing: 1px;
   }
 
   @media (max-width: 600px) {
@@ -107,14 +72,6 @@
 
     .introCopy {
       font-size: 15px;
-    }
-
-    .placeholder {
-      margin-top: 42px;
-
-      h2 {
-        font-size: 25px;
-      }
     }
 
     .planning-layout {

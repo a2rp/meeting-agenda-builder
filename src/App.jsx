@@ -4,6 +4,7 @@ import AgendaEditor from './components/agendaEditor/index.jsx'
 import FacilitatorPanel from './components/facilitatorPanel/index.jsx'
 import Header from './components/header/index.jsx'
 import MeetingList from './components/meetingList/index.jsx'
+import MeetingDialog from './components/meetingDialog/index.jsx'
 import { makeInitialMeetings } from './data/meetings.js'
 
 const loadMeetings = () => {
@@ -28,10 +29,13 @@ const loadSelectedMeetingId = () => {
 const App = () => {
   const [meetings, setMeetings] = useState(loadMeetings)
   const [selectedMeetingId, setSelectedMeetingId] = useState(loadSelectedMeetingId)
+  const [meetingDialogOpen, setMeetingDialogOpen] = useState(false)
+  const [meetingToEdit, setMeetingToEdit] = useState(null)
   const visibleMeetingId = meetings.some((meeting) => meeting.id === selectedMeetingId)
     ? selectedMeetingId
     : meetings[0]?.id
   const selectedMeeting = meetings.find((meeting) => meeting.id === visibleMeetingId)
+  const selectedAgendaMinutes = selectedMeeting?.agenda.reduce((total, item) => total + Number(item.minutes), 0) || 0
 
   const updateAgenda = (meetingId, agenda) => {
     setMeetings((currentMeetings) => currentMeetings.map((meeting) =>
@@ -43,6 +47,40 @@ const App = () => {
     setMeetings((currentMeetings) => currentMeetings.map((meeting) =>
       meeting.id === meetingId ? { ...meeting, note } : meeting,
     ))
+  }
+
+  const openNewMeeting = () => {
+    setMeetingToEdit(null)
+    setMeetingDialogOpen(true)
+  }
+
+  const openEditMeeting = (meeting) => {
+    setMeetingToEdit(meeting)
+    setMeetingDialogOpen(true)
+  }
+
+  const closeMeetingDialog = () => setMeetingDialogOpen(false)
+
+  const saveMeeting = (updatedMeeting) => {
+    const alreadyExists = meetings.some((meeting) => meeting.id === updatedMeeting.id)
+    if (alreadyExists) {
+      setMeetings((currentMeetings) => currentMeetings.map((meeting) =>
+        meeting.id === updatedMeeting.id ? updatedMeeting : meeting,
+      ))
+    } else {
+      setMeetings((currentMeetings) => [...currentMeetings, updatedMeeting])
+      setSelectedMeetingId(updatedMeeting.id)
+    }
+    closeMeetingDialog()
+  }
+
+  const removeMeeting = (meetingId) => {
+    const meeting = meetings.find((item) => item.id === meetingId)
+    if (!meeting || !window.confirm(`Remove "${meeting.title}" and its agenda?`)) return
+    const remainingMeetings = meetings.filter((item) => item.id !== meetingId)
+    setMeetings(remainingMeetings)
+    if (meetingId === visibleMeetingId) setSelectedMeetingId(remainingMeetings[0]?.id || '')
+    closeMeetingDialog()
   }
 
   useEffect(() => {
@@ -78,15 +116,29 @@ const App = () => {
             meetings={meetings}
             selectedMeetingId={visibleMeetingId}
             onSelectMeeting={setSelectedMeetingId}
+            onCreateMeeting={openNewMeeting}
           />
-          <AgendaEditor meeting={selectedMeeting} onUpdateAgenda={updateAgenda} />
+          <AgendaEditor
+            meeting={selectedMeeting}
+            onUpdateAgenda={updateAgenda}
+            onEditMeeting={openEditMeeting}
+          />
           <FacilitatorPanel
-            key={visibleMeetingId || 'no-meeting'}
+            key={`${visibleMeetingId || 'no-meeting'}-${selectedAgendaMinutes}`}
             meeting={selectedMeeting}
             onUpdateNote={updateMeetingNote}
           />
         </div>
       </main>
+      {meetingDialogOpen && (
+        <MeetingDialog
+          key={meetingToEdit?.id || 'new-meeting'}
+          meeting={meetingToEdit}
+          onClose={closeMeetingDialog}
+          onSave={saveMeeting}
+          onDelete={removeMeeting}
+        />
+      )}
     </div>
   )
 }
