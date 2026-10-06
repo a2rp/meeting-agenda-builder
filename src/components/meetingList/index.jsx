@@ -23,7 +23,7 @@ const MeetingList = ({ meetings, selectedMeetingId, onSelectMeeting, onCreateMee
     <aside className={styles.library} id="meetings" aria-labelledby="meeting-list-title">
       <header className={styles['library-heading']}>
         <div>
-          <p className={styles.eyebrow}><LuCalendarDays aria-hidden="true" /> THE MEETING SHELF</p>
+          <p className={styles.label}><LuCalendarDays aria-hidden="true" /> THE MEETING SHELF</p>
           <div className={styles['heading-row']}>
             <h2 id="meeting-list-title">On the calendar</h2>
             <span>{meetings.length}</span>

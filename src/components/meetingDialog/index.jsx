@@ -65,7 +65,7 @@ const MeetingDialog = ({ meeting, confirmationOpen, onClose, onSave, onDelete })
         <header className={styles['dialog-header']}>
           <span className={styles['dialog-icon']}><LuCalendarDays aria-hidden="true" /></span>
           <div>
-            <p className={styles.eyebrow}>{meeting ? 'TEND TO THE DETAILS' : 'MAKE ROOM FOR A GOOD CONVERSATION'}</p>
+            <p className={styles.label}>{meeting ? 'TEND TO THE DETAILS' : 'MAKE ROOM FOR A GOOD CONVERSATION'}</p>
             <h2 id="meeting-dialog-title">{meeting ? 'Edit meeting' : 'Plan a meeting'}</h2>
           </div>
           <button className={styles['close-button']} type="button" onClick={onClose} aria-label="Close meeting form">

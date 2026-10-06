@@ -126,7 +126,7 @@ const AgendaEditor = ({ meeting, onUpdateAgenda, onEditMeeting, onRequestConfirm
         <>
           <header className={styles['editor-heading']}>
             <div>
-              <p className={styles.eyebrow}>THE RUN OF SHOW / 02</p>
+              <p className={styles.label}>THE RUN OF SHOW / 02</p>
               <h2 id="agenda-title">{meeting.title}</h2>
               <p className={styles['meeting-meta']}>
                 {formatMeetingDate(meeting.date)} <span aria-hidden="true">/</span> {meeting.location}
@@ -247,7 +247,7 @@ const AgendaEditor = ({ meeting, onUpdateAgenda, onEditMeeting, onRequestConfirm
         </>
       ) : (
         <div className={styles['empty-agenda']}>
-          <p className={styles.eyebrow}>THE RUN OF SHOW / 02</p>
+          <p className={styles.label}>THE RUN OF SHOW / 02</p>
           <h2 id="agenda-title">Choose a meeting first.</h2>
           <p>Select a session from the meeting shelf to shape its agenda.</p>
         </div>

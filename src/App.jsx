@@ -116,10 +116,10 @@ const App = () => {
     <div className={styles.app} id="top">
       <Header />
       <main className={styles.workspace}>
-        <p className={styles.kicker}>ROOMNOTE / MEETING PLANNER</p>
+        <p className={styles.label}>ROOMNOTE / MEETING PLANNER</p>
         <section className={styles.opening} id="overview" aria-labelledby="page-title">
           <div className={styles['opening-copy']}>
-            <p className={styles.eyebrow}>GOOD MEETINGS START BEFORE THE ROOM FILLS</p>
+            <p className={styles.label}>GOOD MEETINGS START BEFORE THE ROOM FILLS</p>
             <h1 id="page-title">Make the hour count.</h1>
             <p className={styles.introCopy}>
               Shape a clear agenda, give every topic its time, and leave with decisions everyone can act on.

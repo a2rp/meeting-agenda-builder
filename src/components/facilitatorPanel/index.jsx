@@ -49,7 +49,7 @@ const FacilitatorPanel = ({ meeting, onUpdateNote }) => {
   return (
     <aside className={styles.panel} id="notes" aria-label="Meeting preparation">
       <section className={styles['timer-card']} aria-labelledby="timer-title">
-        <p className={styles.eyebrow}>KEEP THE ROOM ON TIME</p>
+        <p className={styles.label}>KEEP THE ROOM ON TIME</p>
         <h2 id="timer-title">Session clock</h2>
         <div className={styles['timer-dial']} style={{ '--timer-progress': `${timerProgress}%` }}>
           <div>
@@ -73,7 +73,7 @@ const FacilitatorPanel = ({ meeting, onUpdateNote }) => {
 
       <section className={styles['people-card']} aria-labelledby="people-title">
         <header>
-          <p className={styles.eyebrow}><LuUsers aria-hidden="true" /> AT THE TABLE</p>
+          <p className={styles.label}><LuUsers aria-hidden="true" /> AT THE TABLE</p>
           <span>{participants.length}</span>
         </header>
         <h2 id="people-title">People in the room</h2>
@@ -93,7 +93,7 @@ const FacilitatorPanel = ({ meeting, onUpdateNote }) => {
 
       <section className={styles['notes-card']} aria-labelledby="prep-note-title">
         <label htmlFor="prep-note">
-          <span className={styles.eyebrow}>A NOTE FOR THE FACILITATOR</span>
+          <span className={styles.label}>A NOTE FOR THE FACILITATOR</span>
           <strong id="prep-note-title">Set the intention.</strong>
         </label>
         <textarea

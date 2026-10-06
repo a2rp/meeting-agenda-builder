@@ -20,7 +20,7 @@
     }
   }
 
-  .eyebrow {
+  .label {
     color: var(--color-rust);
     font-size: 9px;
     font-weight: 800;
@@ -391,7 +391,7 @@
       font-size: 23px;
     }
 
-    p:not(.eyebrow) {
+    p:not(.label) {
       margin-top: 5px;
       color: var(--color-muted);
       font-size: 12px;

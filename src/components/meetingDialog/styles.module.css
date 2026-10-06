@@ -47,7 +47,7 @@
     }
   }
 
-  .eyebrow {
+  .label {
     color: var(--color-rust);
     font-size: 9px;
     font-weight: 800;
