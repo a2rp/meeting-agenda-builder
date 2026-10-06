@@ -39,10 +39,7 @@ const ConfirmationDialog = ({
       >
         <header className={styles['dialog-header']}>
           <span className={styles['dialog-icon']}><LuTrash2 aria-hidden="true" /></span>
-          <div>
-            <p className={styles.eyebrow}>PLEASE CONFIRM</p>
-            <h2 id="confirmation-dialog-title">{title}</h2>
-          </div>
+          <h2 id="confirmation-dialog-title">{title}</h2>
           <button className={styles['close-button']} type="button" onClick={onClose} aria-label="Close confirmation">
             <LuX aria-hidden="true" />
           </button>
