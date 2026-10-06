@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import styles from './App.module.css'
 import AgendaEditor from './components/agendaEditor/index.jsx'
+import BackToTop from './components/backToTop/index.jsx'
 import FacilitatorPanel from './components/facilitatorPanel/index.jsx'
 import Footer from './components/footer/index.jsx'
 import Header from './components/header/index.jsx'
@@ -132,6 +133,7 @@ const App = () => {
         </div>
       </main>
       <Footer />
+      <BackToTop />
       {meetingDialogOpen && (
         <MeetingDialog
           key={meetingToEdit?.id || 'new-meeting'}

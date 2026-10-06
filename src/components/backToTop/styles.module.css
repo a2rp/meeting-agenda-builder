@@ -1,0 +1,35 @@
+.button {
+  position: fixed;
+  z-index: 40;
+  right: max(20px, calc((100vw - 1160px) / 2));
+  bottom: 22px;
+  display: grid;
+  width: 43px;
+  height: 43px;
+  place-items: center;
+  color: #fffaf1;
+  background: var(--color-ink);
+  border: 1px solid var(--color-ink);
+  border-radius: 11px;
+  box-shadow: 0 7px 18px rgb(48 37 28 / 18%);
+  transition: border-color 160ms ease, box-shadow 160ms ease;
+
+  svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  &:hover,
+  &:focus-visible {
+    border-color: var(--color-rust);
+    outline: none;
+    box-shadow: 0 0 0 3px rgb(168 73 50 / 18%), 0 7px 18px rgb(48 37 28 / 18%);
+  }
+
+  @media (max-width: 600px) {
+    right: 14px;
+    bottom: 14px;
+    width: 40px;
+    height: 40px;
+  }
+}
