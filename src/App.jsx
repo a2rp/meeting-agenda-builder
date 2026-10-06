@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import styles from './App.module.css'
 import AgendaEditor from './components/agendaEditor/index.jsx'
 import BackToTop from './components/backToTop/index.jsx'
+import ConfirmationDialog from './components/confirmationDialog/index.jsx'
 import FacilitatorPanel from './components/facilitatorPanel/index.jsx'
 import Footer from './components/footer/index.jsx'
 import Header from './components/header/index.jsx'
@@ -33,6 +34,7 @@ const App = () => {
   const [selectedMeetingId, setSelectedMeetingId] = useState(loadSelectedMeetingId)
   const [meetingDialogOpen, setMeetingDialogOpen] = useState(false)
   const [meetingToEdit, setMeetingToEdit] = useState(null)
+  const [confirmation, setConfirmation] = useState(null)
   const visibleMeetingId = meetings.some((meeting) => meeting.id === selectedMeetingId)
     ? selectedMeetingId
     : meetings[0]?.id
@@ -78,11 +80,20 @@ const App = () => {
 
   const removeMeeting = (meetingId) => {
     const meeting = meetings.find((item) => item.id === meetingId)
-    if (!meeting || !window.confirm(`Remove "${meeting.title}" and its agenda?`)) return
-    const remainingMeetings = meetings.filter((item) => item.id !== meetingId)
-    setMeetings(remainingMeetings)
-    if (meetingId === visibleMeetingId) setSelectedMeetingId(remainingMeetings[0]?.id || '')
-    closeMeetingDialog()
+    if (!meeting) return
+
+    setConfirmation({
+      title: 'Remove this meeting?',
+      description: 'The meeting and its full agenda will be removed. This action cannot be undone.',
+      itemName: meeting.title,
+      confirmLabel: 'Remove meeting',
+      onConfirm: () => {
+        const remainingMeetings = meetings.filter((item) => item.id !== meetingId)
+        setMeetings(remainingMeetings)
+        if (meetingId === visibleMeetingId) setSelectedMeetingId(remainingMeetings[0]?.id || '')
+        closeMeetingDialog()
+      },
+    })
   }
 
   useEffect(() => {
@@ -136,6 +147,7 @@ const App = () => {
             meeting={selectedMeeting}
             onUpdateAgenda={updateAgenda}
             onEditMeeting={openEditMeeting}
+            onRequestConfirmation={setConfirmation}
           />
           <FacilitatorPanel
             key={`${visibleMeetingId || 'no-meeting'}-${selectedAgendaMinutes}`}
@@ -150,9 +162,16 @@ const App = () => {
         <MeetingDialog
           key={meetingToEdit?.id || 'new-meeting'}
           meeting={meetingToEdit}
+          confirmationOpen={Boolean(confirmation)}
           onClose={closeMeetingDialog}
           onSave={saveMeeting}
           onDelete={removeMeeting}
+        />
+      )}
+      {confirmation && (
+        <ConfirmationDialog
+          {...confirmation}
+          onClose={() => setConfirmation(null)}
         />
       )}
     </div>

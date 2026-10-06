@@ -25,7 +25,7 @@ const formatMeetingDate = (dateValue) => new Intl.DateTimeFormat('en-US', {
   day: 'numeric',
 }).format(new Date(`${dateValue}T12:00:00`))
 
-const AgendaEditor = ({ meeting, onUpdateAgenda, onEditMeeting }) => {
+const AgendaEditor = ({ meeting, onUpdateAgenda, onEditMeeting, onRequestConfirmation }) => {
   const [addOpen, setAddOpen] = useState(false)
   const [editingItemId, setEditingItemId] = useState(null)
   const [topicForm, setTopicForm] = useState(makeBlankTopic)
@@ -103,8 +103,15 @@ const AgendaEditor = ({ meeting, onUpdateAgenda, onEditMeeting }) => {
   }
 
   const removeTopic = (item) => {
-    if (!window.confirm(`Remove "${item.title}" from this agenda?`)) return
-    onUpdateAgenda(meeting.id, agenda.filter((agendaItem) => agendaItem.id !== item.id))
+    onRequestConfirmation({
+      title: 'Remove this topic?',
+      description: 'This topic will be removed from the agenda. This action cannot be undone.',
+      itemName: item.title,
+      confirmLabel: 'Remove topic',
+      onConfirm: () => {
+        onUpdateAgenda(meeting.id, agenda.filter((agendaItem) => agendaItem.id !== item.id))
+      },
+    })
   }
 
   const openAddForm = () => {

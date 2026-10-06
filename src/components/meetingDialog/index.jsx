@@ -19,16 +19,18 @@ const getMeetingForm = (meeting) => ({
   note: meeting?.note || '',
 })
 
-const MeetingDialog = ({ meeting, onClose, onSave, onDelete }) => {
+const MeetingDialog = ({ meeting, confirmationOpen, onClose, onSave, onDelete }) => {
   const [form, setForm] = useState(() => getMeetingForm(meeting))
 
   useEffect(() => {
+    if (confirmationOpen) return undefined
+
     const closeOnEscape = (event) => {
       if (event.key === 'Escape') onClose()
     }
     document.addEventListener('keydown', closeOnEscape)
     return () => document.removeEventListener('keydown', closeOnEscape)
-  }, [onClose])
+  }, [confirmationOpen, onClose])
 
   const updateField = (event) => {
     const { name, value } = event.target
