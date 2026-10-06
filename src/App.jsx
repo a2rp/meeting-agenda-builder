@@ -107,11 +107,23 @@ const App = () => {
       <main className={styles.workspace}>
         <p className={styles.kicker}>ROOMNOTE / MEETING PLANNER</p>
         <section className={styles.opening} id="overview" aria-labelledby="page-title">
-          <p className={styles.eyebrow}>GOOD MEETINGS START BEFORE THE ROOM FILLS</p>
-          <h1 id="page-title">Make the hour count.</h1>
-          <p className={styles.introCopy}>
-            Shape a clear agenda, give every topic its time, and leave with decisions everyone can act on.
-          </p>
+          <div className={styles['opening-copy']}>
+            <p className={styles.eyebrow}>GOOD MEETINGS START BEFORE THE ROOM FILLS</p>
+            <h1 id="page-title">Make the hour count.</h1>
+            <p className={styles.introCopy}>
+              Shape a clear agenda, give every topic its time, and leave with decisions everyone can act on.
+            </p>
+          </div>
+          <figure className={styles['opening-visual']}>
+            <img
+              src={`${import.meta.env.BASE_URL}images/meeting-prep.jpg`}
+              alt="A laptop, notebook, pen, and coffee laid out on a wooden desk for meeting preparation"
+            />
+            <figcaption>
+              <span>THE PREP DESK / NO. 01</span>
+              <p>First bring the question. Then bring the room.</p>
+            </figcaption>
+          </figure>
         </section>
         <div className={styles['planning-layout']}>
           <MeetingList
