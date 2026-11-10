@@ -10,12 +10,26 @@ import MeetingList from './components/meetingList/index.jsx'
 import MeetingDialog from './components/meetingDialog/index.jsx'
 import { makeInitialMeetings } from './data/meetings.js'
 
+const isValidMeeting = (meeting) => meeting && typeof meeting === 'object'
+  && typeof meeting.id === 'string' && typeof meeting.title === 'string'
+  && /^\d{4}-\d{2}-\d{2}$/.test(meeting.date)
+  && /^\d{2}:\d{2}$/.test(meeting.startTime)
+  && typeof meeting.location === 'string' && typeof meeting.note === 'string'
+  && Array.isArray(meeting.participants) && meeting.participants.every((person) => typeof person === 'string')
+  && Array.isArray(meeting.agenda) && meeting.agenda.every((item) => item && typeof item.id === 'string'
+    && typeof item.title === 'string' && typeof item.owner === 'string'
+    && Number.isFinite(Number(item.minutes)) && Number(item.minutes) >= 1
+    && typeof item.complete === 'boolean')
+
 const loadMeetings = () => {
   try {
     const savedMeetings = localStorage.getItem('roomnote-meetings-v1')
-    if (savedMeetings) return JSON.parse(savedMeetings)
+    if (savedMeetings) {
+      const parsedMeetings = JSON.parse(savedMeetings)
+      if (Array.isArray(parsedMeetings) && parsedMeetings.every(isValidMeeting)) return parsedMeetings
+    }
   } catch {
-    return makeInitialMeetings()
+    // Start with sample meetings if stored data cannot be read.
   }
 
   return makeInitialMeetings()
@@ -29,12 +43,24 @@ const loadSelectedMeetingId = () => {
   }
 }
 
+const canUseStorage = () => {
+  try {
+    const probeKey = `roomnote-storage-probe-${Date.now()}-${Math.random().toString(36).slice(2)}`
+    localStorage.setItem(probeKey, '1')
+    localStorage.removeItem(probeKey)
+    return true
+  } catch {
+    return false
+  }
+}
+
 const App = () => {
   const [meetings, setMeetings] = useState(loadMeetings)
   const [selectedMeetingId, setSelectedMeetingId] = useState(loadSelectedMeetingId)
   const [meetingDialogOpen, setMeetingDialogOpen] = useState(false)
   const [meetingToEdit, setMeetingToEdit] = useState(null)
   const [confirmation, setConfirmation] = useState(null)
+  const [storageAvailable, setStorageAvailable] = useState(canUseStorage)
   const visibleMeetingId = meetings.some((meeting) => meeting.id === selectedMeetingId)
     ? selectedMeetingId
     : meetings[0]?.id
@@ -97,26 +123,31 @@ const App = () => {
   }
 
   useEffect(() => {
+    if (!storageAvailable) return
     try {
       localStorage.setItem('roomnote-meetings-v1', JSON.stringify(meetings))
     } catch {
-      // The planner remains usable if browser storage is unavailable.
+      setStorageAvailable(false)
     }
-  }, [meetings])
+  }, [meetings, storageAvailable])
 
   useEffect(() => {
+    if (!storageAvailable) return
     try {
       if (visibleMeetingId) localStorage.setItem('roomnote-selected-meeting-v1', visibleMeetingId)
     } catch {
-      // The active meeting is still available until the page is refreshed.
+      setStorageAvailable(false)
     }
-  }, [visibleMeetingId])
+  }, [visibleMeetingId, storageAvailable])
 
   return (
     <div className={styles.app} id="top">
       <Header />
       <main className={styles.workspace}>
-        <p className={styles.label}>ROOMNOTE / MEETING PLANNER</p>
+        <p className={styles.label} role="status" aria-live="polite">
+          ROOMNOTE / MEETING PLANNER
+          <span className={styles['storage-status']}>{storageAvailable ? '· SAVED ON THIS DEVICE' : '· SESSION ONLY / STORAGE UNAVAILABLE'}</span>
+        </p>
         <section className={styles.opening} id="overview" aria-labelledby="page-title">
           <div className={styles['opening-copy']}>
             <p className={styles.label}>GOOD MEETINGS START BEFORE THE ROOM FILLS</p>

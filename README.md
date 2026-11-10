@@ -12,12 +12,13 @@ Roomnote is a meeting planning workspace for setting a clear purpose, building a
 - Use the session clock to keep the meeting on pace.
 - Keep participant details and facilitator notes with each meeting.
 - Save meetings and notes in this browser on this device.
+- Continue planning for the current page session if browser storage is unavailable; a status label shows when changes are not being saved.
 - Use the responsive layout, fixed navigation, smooth section links, and floating back-to-top control on smaller screens.
 
 ## Run locally
 
 ```sh
-npm install
+npm ci
 npm run dev
 ```
 

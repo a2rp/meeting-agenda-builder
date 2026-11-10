@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { LuPause, LuPlay, LuRotateCcw, LuUsers } from 'react-icons/lu'
 import styles from './styles.module.css'
 
@@ -20,28 +20,44 @@ const FacilitatorPanel = ({ meeting, onUpdateNote }) => {
   const totalSeconds = totalMinutes * 60
   const [remainingSeconds, setRemainingSeconds] = useState(totalSeconds)
   const [isRunning, setIsRunning] = useState(false)
+  const deadlineRef = useRef(null)
   const timerProgress = totalSeconds ? Math.round((remainingSeconds / totalSeconds) * 100) : 0
   const participants = meeting?.participants || []
 
   useEffect(() => {
-    if (!isRunning || remainingSeconds <= 0) return undefined
-    const timerId = window.setTimeout(() => {
-      setRemainingSeconds((seconds) => Math.max(seconds - 1, 0))
-    }, 1000)
-    return () => window.clearTimeout(timerId)
-  }, [isRunning, remainingSeconds])
+    if (!isRunning || !deadlineRef.current) return undefined
+    const deadline = deadlineRef.current
+    const timerId = window.setInterval(() => {
+      if (deadlineRef.current !== deadline) return
+      const next = Math.max(0, Math.ceil((deadline - Date.now()) / 1000))
+      setRemainingSeconds((current) => current === next ? current : next)
+      if (next === 0) {
+        deadlineRef.current = null
+        setIsRunning(false)
+      }
+    }, 250)
+    return () => window.clearInterval(timerId)
+  }, [isRunning])
 
   const toggleTimer = () => {
     if (!totalSeconds) return
-    if (remainingSeconds === 0) {
-      setRemainingSeconds(totalSeconds)
-      setIsRunning(true)
+    if (isRunning) {
+      const next = deadlineRef.current
+        ? Math.max(0, Math.ceil((deadlineRef.current - Date.now()) / 1000))
+        : remainingSeconds
+      deadlineRef.current = null
+      setRemainingSeconds(next)
+      setIsRunning(false)
       return
     }
-    setIsRunning((running) => !running)
+    const next = remainingSeconds === 0 ? totalSeconds : remainingSeconds
+    if (remainingSeconds === 0) setRemainingSeconds(totalSeconds)
+    deadlineRef.current = Date.now() + next * 1000
+    setIsRunning(true)
   }
 
   const resetTimer = () => {
+    deadlineRef.current = null
     setIsRunning(false)
     setRemainingSeconds(totalSeconds)
   }
